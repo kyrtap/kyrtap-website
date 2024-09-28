@@ -15,6 +15,15 @@ function spawnWindow() {
     newWindow.querySelector('.button').onclick = spawnWindow;
 
     makeWindowDraggable(newWindow);
+
+    newWindow.querySelector('.title-bar button').onclick = function() {
+        closeWindow(this);
+    };
+}
+
+function closeWindow(buttonElement) {
+    var windowElement = buttonElement.closest('.window');
+    windowElement.remove();
 }
 
 function centerWindow() {
@@ -69,7 +78,6 @@ window.onload = function() {
     updateClock();
     setInterval(updateClock, 1000);
 
-    // Make the initial window draggable
     var messageWindow = document.getElementById('messageWindow');
     makeWindowDraggable(messageWindow);
 };

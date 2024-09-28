@@ -7,28 +7,58 @@ body {
     overflow: hidden;
     position: relative;
     height: 100vh;
+    user-select: none;
 }
 
 .window {
     background-color: #C0C0C0;
     width: 300px;
     border: 2px solid #000;
+    box-shadow: 2px 2px 0px #FFFFFF, 4px 4px 0px #808080;
     position: absolute;
+    cursor: default;
 }
 
 .title-bar {
     background: linear-gradient(to right, #000080, #0000FF);
     color: white;
-    padding: 2px;
+    padding: 2px 5px;
     font-weight: bold;
-    text-align: center;
+    text-align: left;
     height: 20px;
     line-height: 20px;
+    border-bottom: 2px solid #FFFFFF;
+    box-shadow: inset -1px -1px 0px #000, inset 1px 1px 0px #808080;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.title-bar button {
+    background-color: #C0C0C0;
+    border: none;
+    width: 16px;
+    height: 16px;
+    font-weight: bold;
+    color: black;
+    cursor: pointer;
+    display: inline-block;
+    line-height: 16px;
+    padding: 0;
+    margin: 0;
+    text-align: center;
+}
+
+.title-bar button:hover {
+    background-color: #FF0000;
+    color: white;
 }
 
 .content {
     padding: 10px;
     position: relative;
+    background-color: #C0C0C0;
+    box-shadow: inset 1px 1px 0px #FFFFFF, inset -1px -1px 0px #808080;
 }
 
 .button {
@@ -40,6 +70,8 @@ body {
     position: absolute;
     bottom: 10px;
     right: 10px;
+    font-size: 12px;
+    box-shadow: 1px 1px 0px #FFFFFF, -1px -1px 0px #808080;
 }
 
 .button:active {
@@ -58,6 +90,7 @@ body {
     align-items: center;
     padding: 0 10px;
     box-sizing: border-box;
+    box-shadow: 0px 0px 0px 1px #FFFFFF, 2px 2px 0px 1px #808080 inset;
 }
 
 .start-button {
@@ -68,6 +101,8 @@ body {
     font-weight: bold;
     display: flex;
     align-items: center;
+    box-shadow: 1px 1px 0px #FFFFFF, -1px -1px 0px #808080;
+    font-size: 12px;
 }
 
 .start-button img {
@@ -81,8 +116,11 @@ body {
 .clock {
     font-weight: bold;
     padding: 0 10px;
+    font-size: 12px;
+    box-shadow: 1px 1px 0px #FFFFFF, -1px -1px 0px #808080;
 }
 
+/* Icon inside content */
 .globe-icon {
     display: inline-block;
     width: 64px;
@@ -92,4 +130,3 @@ body {
     background-size: cover;
     margin-right: 5px;
 }
-
