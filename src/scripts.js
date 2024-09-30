@@ -1,3 +1,6 @@
+let windows = [];
+let bouncing = false;
+
 function spawnWindow() {
     var windowWidth = window.innerWidth;
     var windowHeight = window.innerHeight;
@@ -19,10 +22,13 @@ function spawnWindow() {
     newWindow.querySelector('.title-bar button').onclick = function() {
         closeWindow(this);
     };
+
+    windows.push(newWindow);
 }
 
 function closeWindow(buttonElement) {
     var windowElement = buttonElement.closest('.window');
+    windows = windows.filter(win => win !== windowElement);
     windowElement.remove();
 }
 
@@ -73,11 +79,51 @@ function makeWindowDraggable(windowElement) {
     };
 }
 
+function startBouncing() {
+    if (bouncing) return;
+    bouncing = true;
+
+    const bounceSpeed = 2;
+    const directions = [];
+
+    windows.forEach(windowElement => {
+        directions.push({
+            x: Math.random() > 0.5 ? bounceSpeed : -bounceSpeed,
+            y: Math.random() > 0.5 ? bounceSpeed : -bounceSpeed,
+        });
+    });
+
+    function animate() {
+        windows.forEach((windowElement, index) => {
+            const rect = windowElement.getBoundingClientRect();
+            let direction = directions[index];
+
+            if (rect.left <= 0 || rect.right >= window.innerWidth) {
+                direction.x *= -1;
+            }
+            if (rect.top <= 0 || rect.bottom >= window.innerHeight - 40) {
+                direction.y *= -1;
+            }
+
+            windowElement.style.left = (rect.left + direction.x) + 'px';
+            windowElement.style.top = (rect.top + direction.y) + 'px';
+        });
+
+        requestAnimationFrame(animate);
+    }
+
+    animate();
+}
+
 window.onload = function() {
     centerWindow();
     updateClock();
-    setInterval(updateClock, 1000);
+    setInterval(updateClock, 200);
 
     var messageWindow = document.getElementById('messageWindow');
     makeWindowDraggable(messageWindow);
+
+    windows.push(messageWindow);
+
+    document.getElementById('clock').onclick = startBouncing;
 };
