@@ -118,7 +118,7 @@ function startBouncing() {
 window.onload = function() {
     centerWindow();
     updateClock();
-    setInterval(updateClock, 200);
+    setInterval(updateClock, 1000);
 
     var messageWindow = document.getElementById('messageWindow');
     makeWindowDraggable(messageWindow);
