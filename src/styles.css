@@ -120,7 +120,6 @@ body {
     box-shadow: 1px 1px 0px #FFFFFF, -1px -1px 0px #808080;
 }
 
-/* Icon inside content */
 .globe-icon {
     display: inline-block;
     width: 64px;
@@ -129,4 +128,33 @@ body {
     background-image: url('img/globe.gif');
     background-size: cover;
     margin-right: 5px;
+}
+
+#desktop {
+    position: relative;
+    width: 100vw;
+    height: calc(100vh - 40px);
+    background-color: #008080;
+    display: flex;
+    align-items: flex-start;
+    padding: 20px;
+}
+
+.desktop-icon {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 10px;
+    cursor: pointer;
+    text-align: center;
+    color: white;
+    font-family: 'MS Sans Serif', Geneva, sans-serif;
+}
+
+.desktop-icon img {
+    margin-bottom: 5px;
+}
+
+.desktop-icon div {
+    font-size: 12px;
 }

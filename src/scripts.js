@@ -124,6 +124,6 @@ window.onload = function() {
     makeWindowDraggable(messageWindow);
 
     windows.push(messageWindow);
-
-    document.getElementById('clock').onclick = startBouncing;
+    
+    document.getElementById('dolphinIcon').onclick = startBouncing;
 };
