@@ -8,6 +8,7 @@ body {
     position: relative;
     height: 100vh;
     user-select: none;
+    cursor: default;
 }
 
 .window {
@@ -17,6 +18,13 @@ body {
     box-shadow: 2px 2px 0px #FFFFFF, 4px 4px 0px #808080;
     position: absolute;
     cursor: default;
+    transition: box-shadow 0.1s ease;
+    z-index: 1;
+}
+
+.window.active {
+    z-index: 10;
+    box-shadow: 2px 2px 0px #FFFFFF, 4px 4px 0px #808080, 0 0 0 1px #000;
 }
 
 .title-bar {
@@ -32,13 +40,19 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    cursor: move;
+    user-select: none;
+}
+
+.window:not(.active) .title-bar {
+    background: linear-gradient(to right, #808080, #A0A0A0);
 }
 
 .title-bar button {
     background-color: #C0C0C0;
-    border: none;
-    width: 16px;
-    height: 16px;
+    border: 1px solid #000;
+    width: 18px;
+    height: 18px;
     font-weight: bold;
     color: black;
     cursor: pointer;
@@ -47,11 +61,19 @@ body {
     padding: 0;
     margin: 0;
     text-align: center;
+    font-size: 12px;
+    box-shadow: inset -1px -1px 0px #808080, inset 1px 1px 0px #FFFFFF;
+    transition: all 0.1s ease;
 }
 
 .title-bar button:hover {
     background-color: #FF0000;
     color: white;
+    box-shadow: inset -1px -1px 0px #800000, inset 1px 1px 0px #FF8080;
+}
+
+.title-bar button:active {
+    box-shadow: inset 1px 1px 0px #800000, inset -1px -1px 0px #FF8080;
 }
 
 .content {
@@ -59,11 +81,19 @@ body {
     position: relative;
     background-color: #C0C0C0;
     box-shadow: inset 1px 1px 0px #FFFFFF, inset -1px -1px 0px #808080;
+    min-height: 100px;
+}
+
+.content p {
+    margin: 0 0 40px 0;
+    display: flex;
+    align-items: center;
+    font-size: 13px;
 }
 
 .button {
     background-color: #C0C0C0;
-    border: 2px solid #000;
+    border: 2px outset #C0C0C0;
     padding: 2px 10px;
     cursor: pointer;
     display: inline-block;
@@ -72,52 +102,113 @@ body {
     right: 10px;
     font-size: 12px;
     box-shadow: 1px 1px 0px #FFFFFF, -1px -1px 0px #808080;
+    transition: all 0.1s ease;
+    min-width: 50px;
+    text-align: center;
+}
+
+.button:hover {
+    background-color: #D4D0C8;
 }
 
 .button:active {
-    border-style: inset;
+    border: 2px inset #C0C0C0;
+    box-shadow: inset 1px 1px 0px #808080, inset -1px -1px 0px #FFFFFF;
 }
 
 .taskbar {
     position: fixed;
     bottom: 0;
     width: 100%;
-    height: 40px;
+    height: 32px;
     background-color: #C0C0C0;
-    border-top: 2px solid #000;
+    border-top: 2px outset #C0C0C0;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 0 10px;
+    padding: 2px;
     box-sizing: border-box;
-    box-shadow: 0px 0px 0px 1px #FFFFFF, 2px 2px 0px 1px #808080 inset;
+    box-shadow: 0 -1px 0 0 #FFFFFF, 0 -2px 0 0 #808080;
+    z-index: 1000;
+    gap: 2px;
+}
+
+.taskbar-left {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+    flex: 1;
+}
+
+.taskbar-right {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+}
+
+.taskbar-divider {
+    width: 2px;
+    height: 24px;
+    background-color: #808080;
+    border-left: 1px solid #FFFFFF;
+    margin: 0 2px;
+    flex-shrink: 0;
+}
+
+.taskbar-buttons {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+    flex: 1;
+    min-width: 0;
 }
 
 .start-button {
     background-color: #C0C0C0;
-    border: 2px solid #000;
-    padding: 5px 10px;
+    border: 2px outset #C0C0C0;
+    padding: 4px 8px;
     cursor: pointer;
     font-weight: bold;
     display: flex;
     align-items: center;
-    box-shadow: 1px 1px 0px #FFFFFF, -1px -1px 0px #808080;
-    font-size: 12px;
+    font-size: 11px;
+    transition: all 0.05s ease;
+    height: 24px;
+    box-sizing: border-box;
+    line-height: 1;
 }
 
 .start-button img {
-    margin-right: 5px;
+    margin-right: 4px;
+    width: 16px;
+    height: 16px;
+}
+
+.start-button:hover {
+    background-color: #D4D0C8;
 }
 
 .start-button:active {
-    border-style: inset;
+    border: 2px inset #C0C0C0;
+    box-shadow: inset 1px 1px 0px #808080, inset -1px -1px 0px #FFFFFF;
+    padding: 5px 7px 3px 9px;
 }
 
 .clock {
-    font-weight: bold;
-    padding: 0 10px;
-    font-size: 12px;
-    box-shadow: 1px 1px 0px #FFFFFF, -1px -1px 0px #808080;
+    font-weight: normal;
+    padding: 2px 6px;
+    font-size: 11px;
+    background-color: #C0C0C0;
+    border: 1px inset #C0C0C0;
+    box-shadow: inset 1px 1px 0px #808080, inset -1px -1px 0px #FFFFFF;
+    min-width: 70px;
+    text-align: center;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    line-height: 1;
 }
 
 .globe-icon {
@@ -133,7 +224,7 @@ body {
 #desktop {
     position: relative;
     width: 100vw;
-    height: calc(100vh - 40px);
+    height: calc(100vh - 32px);
     background-color: #008080;
     display: flex;
     align-items: flex-start;
@@ -149,12 +240,34 @@ body {
     text-align: center;
     color: white;
     font-family: 'MS Sans Serif', Geneva, sans-serif;
+    padding: 2px;
+    border-radius: 0;
+    transition: all 0.1s ease;
+    position: relative;
+}
+
+.desktop-icon:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.desktop-icon.selected {
+    background-color: rgba(0, 0, 255, 0.3);
+    border: 1px dashed #FFFFFF;
 }
 
 .desktop-icon img {
     margin-bottom: 5px;
+    filter: drop-shadow(1px 1px 1px rgba(0, 0, 0, 0.3));
+    transition: transform 0.1s ease;
+}
+
+.desktop-icon:hover img {
+    transform: scale(1.05);
 }
 
 .desktop-icon div {
     font-size: 12px;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+    max-width: 80px;
+    word-wrap: break-word;
 }

@@ -1,7 +1,11 @@
 let windows = [];
 let bouncing = false;
 
-function spawnWindow() {
+function spawnWindow(e) {
+    if (e) {
+        e.stopPropagation();
+    }
+    
     var windowWidth = window.innerWidth;
     var windowHeight = window.innerHeight;
     var messageWindow = document.getElementById('messageWindow');
@@ -11,22 +15,29 @@ function spawnWindow() {
     document.body.appendChild(newWindow);
 
     var newLeft = Math.floor(Math.random() * (windowWidth - windowRect.width));
-    var newTop = Math.floor(Math.random() * (windowHeight - windowRect.height - 40));
+    var newTop = Math.floor(Math.random() * (windowHeight - windowRect.height - 32));
     newWindow.style.left = newLeft + 'px';
     newWindow.style.top = newTop + 'px';
 
-    newWindow.querySelector('.button').onclick = spawnWindow;
+    newWindow.querySelector('.button').onclick = function(e) {
+        spawnWindow(e);
+    };
 
     makeWindowDraggable(newWindow);
 
-    newWindow.querySelector('.title-bar button').onclick = function() {
+    newWindow.querySelector('.title-bar button').onclick = function(e) {
+        e.stopPropagation();
         closeWindow(this);
     };
 
     windows.push(newWindow);
+    setActiveWindow(newWindow);
 }
 
-function closeWindow(buttonElement) {
+function closeWindow(buttonElement, e) {
+    if (e) {
+        e.stopPropagation();
+    }
     var windowElement = buttonElement.closest('.window');
     windows = windows.filter(win => win !== windowElement);
     windowElement.remove();
@@ -38,7 +49,7 @@ function centerWindow() {
     var messageWindow = document.getElementById('messageWindow');
     var windowRect = messageWindow.getBoundingClientRect();
     var centerX = (windowWidth - windowRect.width) / 2;
-    var centerY = (windowHeight - windowRect.height - 40) / 2;
+    var centerY = (windowHeight - windowRect.height - 32) / 2;
     messageWindow.style.left = centerX + 'px';
     messageWindow.style.top = centerY + 'px';
 }
@@ -54,6 +65,15 @@ function makeWindowDraggable(windowElement) {
     var titleBar = windowElement.querySelector('.title-bar');
     var offsetX = 0, offsetY = 0, initialX = 0, initialY = 0, isDragging = false;
 
+    windowElement.onmousedown = function(e) {
+        if (e.target.classList.contains('button') || 
+            e.target.closest('.title-bar button') ||
+            e.target.closest('.button')) {
+            return;
+        }
+        setActiveWindow(windowElement);
+    };
+
     titleBar.onmousedown = function(e) {
         isDragging = true;
         initialX = e.clientX;
@@ -61,6 +81,7 @@ function makeWindowDraggable(windowElement) {
         var rect = windowElement.getBoundingClientRect();
         offsetX = initialX - rect.left;
         offsetY = initialY - rect.top;
+        setActiveWindow(windowElement);
 
         document.onmousemove = function(e) {
             if (isDragging) {
@@ -77,6 +98,11 @@ function makeWindowDraggable(windowElement) {
             document.onmouseup = null;
         };
     };
+}
+
+function setActiveWindow(windowElement) {
+    windows.forEach(win => win.classList.remove('active'));
+    windowElement.classList.add('active');
 }
 
 function startBouncing() {
@@ -101,7 +127,7 @@ function startBouncing() {
             if (rect.left <= 0 || rect.right >= window.innerWidth) {
                 direction.x *= -1;
             }
-            if (rect.top <= 0 || rect.bottom >= window.innerHeight - 40) {
+            if (rect.top <= 0 || rect.bottom >= window.innerHeight - 32) {
                 direction.y *= -1;
             }
 
@@ -122,8 +148,30 @@ window.onload = function() {
 
     var messageWindow = document.getElementById('messageWindow');
     makeWindowDraggable(messageWindow);
+    setActiveWindow(messageWindow);
 
     windows.push(messageWindow);
     
-    document.getElementById('dolphinIcon').onclick = startBouncing;
+    var dolphinIcon = document.getElementById('dolphinIcon');
+    dolphinIcon.onclick = function(e) {
+        e.stopPropagation();
+        selectDesktopIcon(dolphinIcon);
+        setTimeout(startBouncing, 200);
+    };
+    
+    document.getElementById('desktop').onclick = function(e) {
+        if (e.target === this) {
+            deselectDesktopIcons();
+        }
+    };
 };
+
+function selectDesktopIcon(iconElement) {
+    deselectDesktopIcons();
+    iconElement.classList.add('selected');
+}
+
+function deselectDesktopIcons() {
+    var icons = document.querySelectorAll('.desktop-icon');
+    icons.forEach(icon => icon.classList.remove('selected'));
+}

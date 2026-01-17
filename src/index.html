@@ -16,19 +16,25 @@
     <div class="window" id="messageWindow">
         <div class="title-bar">
             <span>kyrtap.de</span>
-            <button onclick="closeWindow(this)">x</button>
+            <button onclick="closeWindow(this, event)">x</button>
         </div>
         <div class="content">
             <p><span class="globe-icon"></span>Hello World!</p>
-            <div class="button" onclick="spawnWindow()">OK</div>
+            <div class="button" onclick="spawnWindow(event)">OK</div>
         </div>
     </div>
     <div class="taskbar">
-        <div class="start-button" onclick="location.href='https://github.com/kyrtap'">
-            <img src="img/github-icon.svg" alt="GitHub" width="16" height="16">
-            Start
+        <div class="taskbar-left">
+            <div class="start-button" onclick="location.href='https://github.com/kyrtap'">
+                <img src="img/github-icon.svg" alt="GitHub" width="16" height="16">
+                Start
+            </div>
+            <div class="taskbar-divider"></div>
+            <div class="taskbar-buttons" id="taskbarButtons"></div>
         </div>
-        <div class="clock" id="clock"></div>
+        <div class="taskbar-right">
+            <div class="clock" id="clock"></div>
+        </div>
     </div>
     <script src="scripts.js"></script>
 </body>
